@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:100,300,400,400i,600,700,800i,900,900i|Oswald:200,300,400,500,600,700&display=swap');
+
+body {
+  /* font-family: 'Oswald', sans-serif; */
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 23px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1 {
+  font-family: 'Oswald', sans-serif;
+}
+
+.h1 {
+  font-size: 32px;
+}
+
 #hello {
   color: red;
 }

@@ -15,7 +15,7 @@
       <i class="far fa-calendar-check fa-2x mx-2 text-white "></i> <span class="navbar-brand mb-0 h1">To Do List</span>
     </span>
     <a href="#">
-      <i class="fas fa-plus fa-2x text-white"></i>
+      <i class="fas fa-plus fa-lg text-white"></i>
     </a>
 
   </nav>
@@ -23,7 +23,7 @@
   <div class="container">
 
     <div id="add-list-form" class="container my-4 w-50">
-      <form>
+      <div>
         <div class="form-group row">
           <label for="todoTitle" class="col-md-4 col-form-label">Title</label>
           <div class="col-md-8">
@@ -31,50 +31,37 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="desc" class="col-md-4 col-form-label ">Description</label>
+          <label for="todoDescription" class="col-md-4 col-form-label ">Description</label>
           <div class="col-md-8">
-            <textarea cols="30" rows="5" class="form-control" id="desc"></textarea>
+            <textarea cols="30" rows="5" class="form-control" id="todoDescription"></textarea>
           </div>
         </div>
         <div class="form-group row">
-          <label for="date" class="col-md-4 col-form-label">Due Date</label>
+          <label for="dueDate" class="col-md-4 col-form-label">Due Date</label>
           <div class="col-md-8">
-            <input type="date" class="form-control" name="dueDate" id="date">
+            <input type="date" class="form-control" id="dueDate">
           </div>
         </div>
-        
-        <fieldset class="form-group">
-          <div class="row">
-            <legend class="col-md-4 col-form-label col pt-0">Priority</legend>
-            <div class="col-md-8">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-                <label class="form-check-label" for="gridRadios1">
-                  Low
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                <label class="form-check-label" for="gridRadios2">
-                  Medium 
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                <label class="form-check-label" for="gridRadios3">
-                  High
-                </label>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-        
+
         <div class="form-group row">
-          <div class="col">
-            <button type="submit" class="btn btn-primary text-center">Add To Do</button>
+          <label for="todoPriority" class="col-md-4 col-form-label">Priority</label>
+          <div class="col-md-8">
+            <select id="todoPriority" class="custom-select ">
+              <option selected value="low">Select Priority For this task</option>
+              <option value="low">LOW</option>
+              <option value="medium">MEDIUM</option>
+              <option value="high">HIGH</option>
+            </select>
           </div>
         </div>
-      </form>
+
+        <div class="form-group row">
+          <div class="col-md-6 mx-auto">
+            <button id="add-list-button" class="btn btn-primary btn-block">Add To Do</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div id="todo-list" class="container">
@@ -88,20 +75,13 @@
             <th scope="col">Priority</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id='list-table-body'>
           <tr>
-            <th scope="row">1</th>
-            <td>Buy Food</td>
-            <td>Need to buy food for next week.</td>
+            <th scope="row">0</th>
+            <td>Sample To Do</td>
+            <td>Sample Description For Reference.</td>
             <td>12/3/2019</td>
-            <td>Important</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Pick up daughter</td>
-            <td>Go there at 4 pm.</td>
-            <td>12/9/2020</td>
-            <td>VIP</td>
+            <td>MEDIUM</td>
           </tr>
 
         </tbody>

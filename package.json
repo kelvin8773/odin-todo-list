@@ -3,8 +3,15 @@
   "version": "1.0.0",
   "description": "## Installation",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.0"
+  },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
+    "css-loader": "^3.3.0",
+    "style-loader": "^1.0.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },

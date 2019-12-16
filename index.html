@@ -12,7 +12,8 @@
 
     <nav id="navbar" class="navbar navbar-dark " style="background-color: #45a1e2;">
         <span>
-      <i class="far fa-calendar-check fa-2x mx-2 text-white "></i> <span class="navbar-brand mb-0 h1">To Do List</span>
+            <i class="far fa-calendar-check fa-2x mx-2 text-white "></i> <span class="navbar-brand mb-0 h1">To Do
+                List</span>
         </span>
         <a href="#">
             <i class="fas fa-plus fa-lg text-white"></i>
@@ -23,46 +24,57 @@
     <div class="container">
 
         <div id="add-list-form" class="container my-4 w-50">
-            <div>
-                <div class="form-group row">
-                    <label for="todoTitle" class="col-md-4 col-form-label">Title</label>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" id="todoTitle">
-                    </div>
+            <div class="form-group row">
+                <label for="todoTitle" class="col-md-4 col-form-label">Title</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="todoTitle">
                 </div>
-                <div class="form-group row">
-                    <label for="todoDescription" class="col-md-4 col-form-label ">Description</label>
-                    <div class="col-md-8">
-                        <textarea cols="30" rows="5" class="form-control" id="todoDescription"></textarea>
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label for="todoDescription" class="col-md-4 col-form-label ">Description</label>
+                <div class="col-md-8">
+                    <textarea cols="30" rows="5" class="form-control" id="todoDescription"></textarea>
                 </div>
-                <div class="form-group row">
-                    <label for="dueDate" class="col-md-4 col-form-label">Due Date</label>
-                    <div class="col-md-8">
-                        <input type="date" class="form-control" id="dueDate">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="todoPriority" class="col-md-4 col-form-label">Priority</label>
-                    <div class="col-md-8">
-                        <select id="todoPriority" class="custom-select ">
-              <option selected value="low">Select Priority For this task</option>
-              <option value="low">LOW</option>
-              <option value="medium">MEDIUM</option>
-              <option value="high">HIGH</option>
-            </select>
-                    </div>
-                </div>
-
-                <div class="form-group row ml-5 pl-5">
-                    <div class="col-md-6 mx-auto">
-                        <button id="add-list-button" class="btn btn-primary btn-block">Add To Do</button>
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label for="dueDate" class="col-md-4 col-form-label">Due Date</label>
+                <div class="col-md-8">
+                    <input type="date" class="form-control" id="dueDate">
                 </div>
             </div>
 
+            <div class="form-group row">
+                <label for="todoPriority" class="col-md-4 col-form-label">Priority</label>
+                <div class="col-md-8">
+                    <select id="todoPriority" class="custom-select ">
+                        <option selected value="low">Select Priority For this task</option>
+                        <option value="low">LOW</option>
+                        <option value="medium">MEDIUM</option>
+                        <option value="high">HIGH</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row ml-5 pl-5">
+                <div class="col-md-6 mx-auto">
+                    <button id="add-list-button" class="btn btn-primary btn-block">Add To Project</button>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="project" class="col-md-4 col-form-label"> Select/Enter A Project</label>
+                <div class="col-md-8">
+                    <input type="text" id="todoProject" list="projectList" class="form-control">
+                </div>
+            </div>
+
+            <datalist id="projectList">
+                <option value="Project1">
+                <option value="Project2">
+            </datalist>
         </div>
+
+        <hr class="border my-4">
 
         <div id="todo-list" class="container">
             <table class="table table-hover">

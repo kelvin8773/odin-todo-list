@@ -104,3 +104,7 @@ typings/
 .tern-port
 
 .DS_Store
+
+.eslintrc.js
+.eslintignore
+

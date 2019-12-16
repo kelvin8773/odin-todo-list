@@ -63,7 +63,6 @@ const addList = (listArray) => {
   const inputPriority = document.querySelector('#todoPriority').value;
 
   if (inputTitle.length === 0) {
-    // console.log('Please input Title for to do list!');
     window.location.reload();
   } else {
     if (inputDueDate.length === 0) {

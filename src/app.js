@@ -6,9 +6,11 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import './style.css';
 
-const listArray = [];
+const todoLists = [];
 
-const todoList = (title, description, dueDate, priority) => {
+
+
+const todoList = (title, description, dueDate, priority, project) => {
   let finish = false;
   const getFinish = () => finish;
   const setFinish = () => {
@@ -23,6 +25,7 @@ const todoList = (title, description, dueDate, priority) => {
     priority,
     getFinish,
     setFinish,
+    project
   };
 };
 
@@ -77,16 +80,21 @@ const clearTable = () => {
 };
 
 const Controller = (() => {
-  listArray.push(todoList('Buy Food', 'For Next Week', '12/3/2019', 'medium'));
-  listArray.push(todoList('Go to Bank', 'Need to pay the bill', '12/15/2019', 'high'));
+  todoLists.push(todoList('Buy Food', 'For Next Week', '12/3/2019', 'medium', 'project1'));
+  todoLists.push(todoList('Go to Bank', 'Need to pay the bill', '12/15/2019', 'high', 'project2'));
 
-  renderList(listArray);
+  let projectList = todoLists.map((list) => list.project);
+  console.log(projectList);
+
+  renderList(todoLists);
 
   const runApp = () => {
-    addList(listArray);
+    addList(todoLists);
     clearTable();
-    renderList(listArray);
+    renderList(todoLists);
   };
+
+
 
   const init = () => {
     const addListButton = document.querySelector('#add-list-button');

@@ -162,7 +162,11 @@ const addTodoList = (todoLists) => {
 };
 
 const getProjectList = (todoLists) => {
-  return todoLists.map((list) => list.project);
+  
+  const todo = todoLists.map((list) => list.project);
+  const distinctToDos= [...new Set(todo)];
+  return distinctToDos;
+
 }
 
 // app logic 

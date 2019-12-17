@@ -155,7 +155,8 @@ const addTodoList = (todoLists) => {
     window.location.reload();
   } else {
     if (inputDueDate.length === 0) {
-      inputDueDate = '12/3/2019';
+      let today = new Date();
+      inputDueDate = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear();
     }
     todoLists.push(todoList(inputTitle, inputDescription, inputDueDate, inputPriority, inputProject));
   }

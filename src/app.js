@@ -151,8 +151,8 @@ const addTodoList = (todoLists) => {
   const inputPriority = document.querySelector('#todoPriority').value;
   const inputProject = document.getElementById('todoProject').value;
 
-  if (inputTitle.length === 0) {
-    window.location.reload();
+  if (inputTitle.length === 0 || inputProject.length ===0) {
+    alert("Title and Project must be filled out");
   } else {
     if (inputDueDate.length === 0) {
       let today = new Date();

@@ -55,28 +55,39 @@
                 </div>
             </div>
 
+            <div class="form-group row">
+                <label for="project" class="col-md-4 col-form-label">Project</label>
+                <div class="col-md-8">
+                    <input type="text" id="todoProject" list="project-Lists" class="form-control"
+                        placeholder="Select/Enter a project Here!">
+                </div>
+            </div>
+
             <div class="form-group row ml-5 pl-5">
                 <div class="col-md-6 mx-auto">
-                    <button id="add-list-button" class="btn btn-primary btn-block">Add To Project</button>
+                    <button id="add-list-button" class="btn btn-primary btn-block">Add Todo List</button>
                 </div>
             </div>
-
-            <div class="form-group row">
-                <label for="project" class="col-md-4 col-form-label"> Select/Enter A Project</label>
-                <div class="col-md-8">
-                    <input type="text" id="todoProject" list="projectList" class="form-control">
-                </div>
-            </div>
-
-            <datalist id="projectList">
-                <option value="Project1">
-                <option value="Project2">
-            </datalist>
         </div>
 
         <hr class="border my-4">
 
         <div id="todo-list" class="container">
+            <div class="row">
+                <div class="col-md-10">
+                    <nav>
+                        <div class="nav nav-tabs nav-fill" id="project-tabs" role="projectTabList">
+                            <!-- <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                                role="tab" aria-controls="nav-home" aria-selected="true">Project Tab 1</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+                                role="tab" aria-controls="nav-profile" aria-selected="false">Project Tab 2</a>
+                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
+                                role="tab" aria-controls="nav-contact" aria-selected="false">Project Tab 3</a> -->
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -98,6 +109,11 @@
 
                 </tbody>
             </table>
+
+            <datalist id="project-Lists">
+            </datalist>
+
+
         </div>
 
 

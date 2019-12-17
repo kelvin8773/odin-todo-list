@@ -10,8 +10,10 @@ import './style.css';
 
 const render = (todoLists) => {
   let projectLists = getProjectList(todoLists);
-  renderProjectTabs(projectLists);
-  renderTodoList(todoLists);
+
+  if (projectLists.length !== 0) renderProjectTabs(projectLists);
+  if (todoList.length !== 0) renderTodoListTabs(todoLists);
+
   renderProjectListForm(projectLists);
 }
 
@@ -19,31 +21,72 @@ const renderProjectTabs = (projectLists) => {
   let projectTabs = document.getElementById('project-tabs');
   projectTabs.innerHTML = '';
 
-  for (let projectList of projectLists) {
+  for (let project of projectLists) {
     let projectTab = document.createElement('a');
-    projectTab.setAttribute('class', "nav-item nav-link active");
-    projectTab.setAttribute('id', projectList + "-tab");
+    if (projectLists.indexOf(project) === 0) {
+      projectTab.setAttribute('class', "nav-item nav-link active");
+      projectTab.setAttribute('aria-selected', "true");
+    } else {
+      projectTab.setAttribute('class', "nav-item nav-link");
+      projectTab.setAttribute('aria-selected', "false");
+    }
+
+    projectTab.setAttribute('id', project + "-tab");
     projectTab.setAttribute('data-toggle', "tab");
-    projectTab.setAttribute('href', "#" + projectList);
+    projectTab.setAttribute('href', "#" + project);
     projectTab.setAttribute('role', "tab");
-    projectTab.setAttribute('aria-controls', projectList);
-    projectTab.setAttribute('aria-selected', "true");
-    projectTab.innerText = projectList;
-
+    projectTab.setAttribute('aria-controls', project);
+    projectTab.innerText = project;
     projectTabs.append(projectTab);
-
   }
 }
 
-const renderTodoList = (todoLists) => {
-  const listTableBody = document.querySelector('#list-table-body');
-  listTableBody.innerHTML = '';
+const renderTodoListTabs = (todoLists) => {
+  const projectLists = getProjectList(todoLists);
+  const tabContent = document.getElementById('nav-tabContent');
+  tabContent.innerHTML = '';
+
+  for (let project of projectLists) {
+    const tabPanel = document.createElement('div');
+    if (projectLists.indexOf(project) === 0) {
+      tabPanel.setAttribute('class', "tab-pane fade show active");
+    } else {
+      tabPanel.setAttribute('class', "tab-pane fade");
+    }
+    tabPanel.setAttribute('id', project);
+    tabPanel.setAttribute('role', "tabpanel");
+    tabPanel.setAttribute('aria-labelledby', project + "-tab");
+
+    const todoListTable = document.createElement('table');
+    todoListTable.setAttribute('class', "table table-hover");
+    todoListTable.setAttribute('cellspacing', "0");
+    todoListTable.insertAdjacentHTML('afterbegin',
+      `<thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">DueDate</th>
+        <th scope="col">Priority</th>
+      </tr>
+    </thead>`);
+    const todoListBody = document.createElement('tbody');
+    const projectTodoLists = todoLists.filter((todo) => todo.project === project);
+
+    todoListTable.append(renderTodoList(projectTodoLists, todoListBody));
+    tabPanel.append(todoListTable);
+    tabContent.append(tabPanel);
+  }
+};
+
+const renderTodoList = (todoLists, node) => {
+  node.innerHTML = ''
   for (let i = 0; i < todoLists.length; i += 1) {
     const listLine = document.createElement('tr');
 
     const listID = document.createElement('th');
     listID.scope = 'row';
-    listID.innerText = i + 1;
+    listID.innerText = i;
     listLine.append(listID);
 
     const listTitle = document.createElement('td');
@@ -59,13 +102,14 @@ const renderTodoList = (todoLists) => {
     listLine.append(listDueDate);
 
     const listPriority = document.createElement('td');
-    listPriority.innerText = todoLists[i].priority.toUpperCase();
+    listPriority.innerText = todoLists[i].priority;
     listLine.append(listPriority);
 
-    listTableBody.append(listLine);
+    node.append(listLine);
   }
-};
 
+  return node
+}
 
 const renderProjectListForm = (projectLists) => {
   let addListForm = document.getElementById('add-list-form');
@@ -136,8 +180,8 @@ const Controller = (() => {
 
   const init = () => {
     // Add sample todo lists
-    todoLists.push(todoList('Buy Food', 'For Next Week', '12/3/2019', 'medium', 'Home Project'));
-    todoLists.push(todoList('Go to Bank', 'Need to pay the bill', '12/15/2019', 'high', 'Office Project'));
+    todoLists.push(todoList('Buy Food', 'For Next Week', '12/3/2019', 'medium', 'Project1'));
+    todoLists.push(todoList('Go to Bank', 'Need to pay the bill', '12/15/2019', 'high', 'Project2'));
 
     setupApp();
     const addListButton = document.querySelector('#add-list-button');

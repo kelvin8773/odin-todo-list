@@ -68,6 +68,8 @@ const renderTodoListTabs = (todoLists) => {
         <th scope="col">Description</th>
         <th scope="col">DueDate</th>
         <th scope="col">Priority</th>
+        <th scope="col">Status</th>
+        <th scope="col">Delete</th>
       </tr>
     </thead>`);
     const todoListBody = document.createElement('tbody');
@@ -94,6 +96,7 @@ const renderTodoList = (todoLists, node) => {
     listLine.append(listTitle);
 
     const listDescription = document.createElement('td');
+    
     listDescription.innerText = todoLists[i].description;
     listLine.append(listDescription);
 
@@ -104,6 +107,16 @@ const renderTodoList = (todoLists, node) => {
     const listPriority = document.createElement('td');
     listPriority.innerText = todoLists[i].priority;
     listLine.append(listPriority);
+
+    const listStatus = document.createElement('th');
+    listStatus.scope = 'row';
+    listStatus.innerHTML = '<input type="checkbox">';
+    listLine.append(listStatus);
+
+    const listDelete = document.createElement('th');
+    listDelete.scope = 'row';
+    listDelete.innerHTML ='<i class="fas fa-trash-alt"></i>';
+    listLine.append(listDelete);
 
     node.append(listLine);
   }
@@ -168,6 +181,10 @@ const getProjectList = (todoLists) => {
   const distinctToDos= [...new Set(todo)];
   return distinctToDos;
 
+}
+
+const deleteTodo = () =>{
+  
 }
 
 // app logic 

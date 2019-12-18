@@ -19,3 +19,8 @@ h6,
 .h1 {
   font-size: 30px;
 }
+
+.delete-todo :hover {
+  color: red;
+  cursor: pointer;
+}

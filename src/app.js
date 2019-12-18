@@ -15,6 +15,13 @@ const render = (todoLists) => {
   if (todoList.length !== 0) renderTodoListTabs(todoLists);
 
   renderProjectListForm(projectLists);
+
+  // document.querySelectorAll(".check-status").addEventListener('change', renderTodoListStatus(todoId))
+
+}
+
+const renderTodoListStatus = () => {
+
 }
 
 const renderProjectTabs = (projectLists) => {
@@ -96,7 +103,7 @@ const renderTodoList = (todoLists, node) => {
     listLine.append(listTitle);
 
     const listDescription = document.createElement('td');
-    
+
     listDescription.innerText = todoLists[i].description;
     listLine.append(listDescription);
 
@@ -108,14 +115,13 @@ const renderTodoList = (todoLists, node) => {
     listPriority.innerText = todoLists[i].priority;
     listLine.append(listPriority);
 
-    const listStatus = document.createElement('th');
-    listStatus.scope = 'row';
-    listStatus.innerHTML = '<input type="checkbox">';
+    const listStatus = document.createElement('td');
+    listStatus.innerHTML = '<input type="checkbox" class="check-status">';
     listLine.append(listStatus);
 
-    const listDelete = document.createElement('th');
-    listDelete.scope = 'row';
-    listDelete.innerHTML ='<i class="fas fa-trash-alt"></i>';
+    const listDelete = document.createElement('td');
+    listDelete.setAttribute('class', "text-secondary delete-todo");
+    listDelete.innerHTML = '<i class="fas fa-trash-alt fa-lg"></i>';
     listLine.append(listDelete);
 
     node.append(listLine);
@@ -164,27 +170,27 @@ const addTodoList = (todoLists) => {
   const inputPriority = document.querySelector('#todoPriority').value;
   const inputProject = document.getElementById('todoProject').value;
 
-  if (inputTitle.length === 0 || inputProject.length ===0) {
+  if (inputTitle.length === 0 || inputProject.length === 0) {
     alert("Title and Project must be filled out");
   } else {
     if (inputDueDate.length === 0) {
       let today = new Date();
-      inputDueDate = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear();
+      inputDueDate = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
     }
     todoLists.push(todoList(inputTitle, inputDescription, inputDueDate, inputPriority, inputProject));
   }
 };
 
 const getProjectList = (todoLists) => {
-  
+
   const todo = todoLists.map((list) => list.project);
-  const distinctToDos= [...new Set(todo)];
+  const distinctToDos = [...new Set(todo)];
   return distinctToDos;
 
 }
 
-const deleteTodo = () =>{
-  
+const deleteTodo = () => {
+
 }
 
 // app logic 

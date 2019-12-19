@@ -8,87 +8,87 @@ import './style.css';
 
 const todoLists = [];
 
-// UI 
-const render = (todoLists) => {
-  let projectLists = getProjectList(todoLists);
-  if (projectLists.length !== 0) renderProjectTabs(projectLists);
-  if (todoList.length !== 0) renderTodoListTabs(todoLists);
+// Data Module
+const todoList = (title, description, dueDate, priority, project) => {
+  const status = false;
+  const id = `_${Math.random().toString(36).substr(2, 12)}`;
 
-  renderProjectListForm(projectLists);
+  return {
+    id,
+    title,
+    description,
+    dueDate,
+    priority,
+    status,
+    project,
+  };
+};
 
-}
+const addTodoList = (todoLists) => {
+  const inputTitle = document.querySelector('#todoTitle').value;
+  const inputDescription = document.querySelector('#todoDescription').value;
+  let inputDueDate = document.querySelector('#dueDate').value;
+  const inputPriority = document.querySelector('#todoPriority').value;
+  const inputProject = document.getElementById('todoProject').value;
 
-const renderProjectTabs = (projectLists) => {
-  let projectTabs = document.getElementById('project-tabs');
-  projectTabs.innerHTML = '';
+  if (inputTitle.length === 0 || inputProject.length === 0) {
+    const alertBar = document.getElementById('alert-bar');
+    alertBar.innerHTML = `
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Be Careful!</strong> Title and Project must be filled out!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    `;
 
-  for (let project of projectLists) {
-    let projectTab = document.createElement('a');
-    if (projectLists.indexOf(project) === 0) {
-      projectTab.setAttribute('class', "nav-item nav-link active");
-      projectTab.setAttribute('aria-selected', "true");
-    } else {
-      projectTab.setAttribute('class', "nav-item nav-link");
-      projectTab.setAttribute('aria-selected', "false");
+    document.querySelector('.alert');
+  } else {
+    if (inputDueDate.length === 0) {
+      const today = new Date();
+      inputDueDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
     }
-
-    projectTab.setAttribute('id', project + "-tab");
-    projectTab.setAttribute('data-toggle', "tab");
-    projectTab.setAttribute('href', "#" + project);
-    projectTab.setAttribute('role', "tab");
-    projectTab.setAttribute('aria-controls', project);
-    projectTab.innerText = project;
-    projectTabs.append(projectTab);
-  }
-}
-
-const renderTodoListTabs = (todoLists) => {
-  const projectLists = getProjectList(todoLists);
-  const tabContent = document.getElementById('nav-tabContent');
-  tabContent.innerHTML = '';
-
-  for (let project of projectLists) {
-    const tabPanel = document.createElement('div');
-    if (projectLists.indexOf(project) === 0) {
-      tabPanel.setAttribute('class', "tab-pane fade show active");
-    } else {
-      tabPanel.setAttribute('class', "tab-pane fade");
-    }
-    tabPanel.setAttribute('id', project);
-    tabPanel.setAttribute('role', "tabpanel");
-    tabPanel.setAttribute('aria-labelledby', project + "-tab");
-
-    const todoListTable = document.createElement('table');
-    todoListTable.setAttribute('class', "table table-hover");
-    todoListTable.setAttribute('cellspacing', "0");
-    todoListTable.insertAdjacentHTML('afterbegin',
-      `<thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
-        <th scope="col">Description</th>
-        <th scope="col">DueDate</th>
-        <th scope="col">Priority</th>
-        <th scope="col">Status</th>
-        <th scope="col">Delete</th>
-      </tr>
-    </thead>`);
-    const todoListBody = document.createElement('tbody');
-    const projectTodoLists = todoLists.filter((todo) => todo.project === project);
-
-    todoListTable.append(renderTodoList(projectTodoLists, todoListBody));
-    tabPanel.append(todoListTable);
-    tabContent.append(tabPanel);
+    todoLists.push(todoList(inputTitle,
+      inputDescription,
+      inputDueDate,
+      inputPriority,
+      inputProject));
   }
 };
 
-const renderTodoList = (lists, node) => {
-  node.innerHTML = ''
-  for (let i = 0; i < lists.length; i += 1) {
+const getProjectList = (todoLists) => {
+  const todo = todoLists.map((list) => list.project);
+  const distinctToDos = [...new Set(todo)];
+  return distinctToDos;
+};
 
+const changeTodo = (todoLists, todoId, action) => {
+  if (action === 'delete') {
+    for (let i = 0; i < todoLists.length; i += 1) {
+      if (todoLists[i].id === todoId) {
+        todoLists.splice(i, 1);
+      }
+    }
+  }
+
+  if (action === 'changeStatus') {
+    for (let i = 0; i < todoLists.length; i += 1) {
+      if (todoLists[i].id === todoId) {
+        todoLists[i].status = !todoLists[i].status;
+      }
+    }
+  }
+
+  return todoLists;
+};
+
+// UI
+const renderTodoList = (lists, node) => {
+  node.innerHTML = '';
+  for (let i = 0; i < lists.length; i += 1) {
     const listLine = document.createElement('tr');
     if (lists[i].status) {
-      listLine.setAttribute('class', "text-danger cross-text");
+      listLine.setAttribute('class', 'text-danger cross-text');
     }
 
     const listID = document.createElement('th');
@@ -126,110 +126,117 @@ const renderTodoList = (lists, node) => {
         <input type="checkbox">
         <span class="slider round"></span>
       </label>`;
+    }
 
-    };
-
-    listStatus.addEventListener('change', function () {
-      renderTodoListTabs(changeTodo(todoLists, lists[i].id, 'changeStatus'))
+    listStatus.addEventListener('change', () => {
+      renderTodoListTabs(changeTodo(todoLists, lists[i].id, 'changeStatus'));
     });
     listLine.append(listStatus);
 
     const listDelete = document.createElement('td');
-    listDelete.setAttribute('class', "text-secondary delete-todo");
+    listDelete.setAttribute('class', 'text-secondary delete-todo');
     listDelete.innerHTML = '<i class="fas fa-trash-alt fa-lg"></i>';
-    listDelete.addEventListener('click', function () {
+    listDelete.addEventListener('click', () => {
       renderTodoListTabs(changeTodo(todoLists, lists[i].id, 'delete'));
-    })
+    });
     listLine.append(listDelete);
 
     node.append(listLine);
   }
 
-  return node
-}
+  return node;
+};
 
 const renderProjectListForm = (projectLists) => {
-  let addListForm = document.getElementById('add-list-form');
-  let projectDatalist = document.getElementById('project-Lists');
+  const addListForm = document.getElementById('add-list-form');
+  const projectDatalist = document.getElementById('project-Lists');
   projectDatalist.innerHTML = '';
 
-  for (let projectList of projectLists) {
-    let projectListOption = document.createElement('option');
-    projectListOption.value = projectList;
+  for (let i = 0; i < projectLists.length; i += 1) {
+    const projectListOption = document.createElement('option');
+    projectListOption.value = projectLists[i];
     projectDatalist.append(projectListOption);
   }
   addListForm.append(projectDatalist);
-}
-
-// Data Module 
-const todoList = (title, description, dueDate, priority, project) => {
-  let status = false;
-  let id = '_' + Math.random().toString(36).substr(2, 12);
-
-  return {
-    id,
-    title,
-    description,
-    dueDate,
-    priority,
-    status,
-    project
-  };
 };
 
-const addTodoList = (todoLists) => {
-  const inputTitle = document.querySelector('#todoTitle').value;
-  const inputDescription = document.querySelector('#todoDescription').value;
-  let inputDueDate = document.querySelector('#dueDate').value;
-  const inputPriority = document.querySelector('#todoPriority').value;
-  const inputProject = document.getElementById('todoProject').value;
+const renderProjectTabs = (projectLists) => {
+  const projectTabs = document.getElementById('project-tabs');
+  projectTabs.innerHTML = '';
 
-  if (inputTitle.length === 0 || inputProject.length === 0) {
-    alert("Title and Project must be filled out");
-  } else {
-    if (inputDueDate.length === 0) {
-      let today = new Date();
-      inputDueDate = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+  for (let i = 0; i < projectLists.length; i += 1) {
+    const projectTab = document.createElement('a');
+    if (i === 0) {
+      projectTab.setAttribute('class', 'nav-item nav-link active');
+      projectTab.setAttribute('aria-selected', 'true');
+    } else {
+      projectTab.setAttribute('class', 'nav-item nav-link');
+      projectTab.setAttribute('aria-selected', 'false');
     }
-    todoLists.push(todoList(inputTitle, inputDescription, inputDueDate, inputPriority, inputProject));
+
+    projectTab.setAttribute('id', `${projectLists[i]}-tab`);
+    projectTab.setAttribute('data-toggle', 'tab');
+    projectTab.setAttribute('href', `#${projectLists[i]}`);
+    projectTab.setAttribute('role', 'tab');
+    projectTab.setAttribute('aria-controls', projectLists[i]);
+    projectTab.innerText = projectLists[i];
+    projectTabs.append(projectTab);
   }
 };
 
-const getProjectList = (todoLists) => {
-  const todo = todoLists.map((list) => list.project);
-  const distinctToDos = [...new Set(todo)];
-  return distinctToDos;
+const renderTodoListTabs = (todoLists) => {
+  const projectLists = getProjectList(todoLists);
+  const tabContent = document.getElementById('nav-tabContent');
+  tabContent.innerHTML = '';
 
-}
-
-const changeTodo = (todoLists, todoId, action) => {
-  console.log(todoId);
-  if (action === 'delete') {
-    for (let i = 0; i < todoLists.length; i++) {
-      if (todoLists[i].id === todoId) {
-        todoLists.splice(i, 1);
-      }
+  for (let i = 0; i < projectLists.length; i += 1) {
+    const tabPanel = document.createElement('div');
+    if (i === 0) {
+      tabPanel.setAttribute('class', 'tab-pane fade show active');
+    } else {
+      tabPanel.setAttribute('class', 'tab-pane fade');
     }
-  };
+    tabPanel.setAttribute('id', projectLists[i]);
+    tabPanel.setAttribute('role', 'tabpanel');
+    tabPanel.setAttribute('aria-labelledby', `${projectLists[i]}-tab`);
 
-  console.log(todoLists, todoId, action);
+    const todoListTable = document.createElement('table');
+    todoListTable.setAttribute('class', 'table table-hover');
+    todoListTable.setAttribute('cellspacing', '0');
+    todoListTable.insertAdjacentHTML('afterbegin',
+      `<thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">DueDate</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Status</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>`);
+    const todoListBody = document.createElement('tbody');
+    const projectTodoLists = todoLists.filter((todo) => todo.project === projectLists[i]);
 
-  if (action === 'changeStatus') {
-    for (let i = 0; i < todoLists.length; i++) {
-      if (todoLists[i].id === todoId) {
-        todoLists[i].status = !todoLists[i].status;
-      }
-    }
-  };
-
-  return todoLists;
+    todoListTable.append(renderTodoList(projectTodoLists, todoListBody));
+    tabPanel.append(todoListTable);
+    tabContent.append(tabPanel);
+  }
 };
 
-// app logic 
+const render = (todoLists) => {
+  const projectLists = getProjectList(todoLists);
+  if (projectLists.length !== 0) renderProjectTabs(projectLists);
+  if (todoList.length !== 0) renderTodoListTabs(todoLists);
+
+  renderProjectListForm(projectLists);
+};
+
+// app logic
 const Controller = (() => {
   const setupApp = () => {
     render(todoLists);
-  }
+  };
 
   const runApp = () => {
     addTodoList(todoLists);

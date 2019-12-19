@@ -41,7 +41,6 @@ const addTodoList = (todoLists) => {
         </button>
       </div>
     `;
-
     document.querySelector('.alert');
   } else {
     if (inputDueDate.length === 0) {
@@ -57,7 +56,7 @@ const addTodoList = (todoLists) => {
 };
 
 const getProjectList = (todoLists) => {
-  const todo = todoLists.map((list) => { list.project });
+  const todo = todoLists.map((list) => list.project);
   const distinctToDos = [...new Set(todo)];
   return distinctToDos;
 };
@@ -216,7 +215,7 @@ const renderTodoListTabs = (todoLists) => {
       </tr>
     </thead>`);
     const todoListBody = document.createElement('tbody');
-    const projectTodoLists = todoLists.filter((todo) => { todo.project === projectLists[i] });
+    const projectTodoLists = todoLists.filter((todo) => todo.project === projectLists[i]);
 
     todoListTable.append(renderTodoList(projectTodoLists, todoListBody));
     tabPanel.append(todoListTable);
@@ -250,9 +249,8 @@ const Controller = (() => {
     todoLists.push(todoList('check the gas', 'For Next Month', '12/22/2019', 'high', 'Project1'));
     todoLists.push(todoList('Go to Bank', 'Need to pay the bill', '12/15/2019', 'high', 'Project2'));
     todoLists.push(todoList('Buy some gifts', 'For Christmas', '12/20/2019', 'high', 'Project2'));
-
     setupApp();
-    const addListButton = document.querySelector('#add-list-button');
+    const addListButton = document.getElementById('add-list-button');
     addListButton.addEventListener('click', runApp);
   };
 

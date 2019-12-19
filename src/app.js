@@ -6,8 +6,9 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import './style.css';
 
-// UI 
+const todoLists = [];
 
+// UI 
 const render = (todoLists) => {
   let projectLists = getProjectList(todoLists);
 
@@ -15,12 +16,6 @@ const render = (todoLists) => {
   if (todoList.length !== 0) renderTodoListTabs(todoLists);
 
   renderProjectListForm(projectLists);
-
-  // document.querySelectorAll(".check-status").addEventListener('change', renderTodoListStatus(todoId))
-
-}
-
-const renderTodoListStatus = () => {
 
 }
 
@@ -88,10 +83,14 @@ const renderTodoListTabs = (todoLists) => {
   }
 };
 
-const renderTodoList = (todoLists, node) => {
+const renderTodoList = (lists, node) => {
   node.innerHTML = ''
-  for (let i = 0; i < todoLists.length; i += 1) {
+  for (let i = 0; i < lists.length; i += 1) {
+
     const listLine = document.createElement('tr');
+    if (lists[i].status) {
+      listLine.setAttribute('class', "text-danger cross-text");
+    }
 
     const listID = document.createElement('th');
     listID.scope = 'row';
@@ -99,24 +98,42 @@ const renderTodoList = (todoLists, node) => {
     listLine.append(listID);
 
     const listTitle = document.createElement('td');
-    listTitle.innerText = todoLists[i].title;
+    listTitle.innerText = lists[i].title;
     listLine.append(listTitle);
 
     const listDescription = document.createElement('td');
 
-    listDescription.innerText = todoLists[i].description;
+    listDescription.innerText = lists[i].description;
     listLine.append(listDescription);
 
     const listDueDate = document.createElement('td');
-    listDueDate.innerText = todoLists[i].dueDate;
+    listDueDate.innerText = lists[i].dueDate;
     listLine.append(listDueDate);
 
     const listPriority = document.createElement('td');
-    listPriority.innerText = todoLists[i].priority;
+    listPriority.innerText = lists[i].priority;
     listLine.append(listPriority);
 
     const listStatus = document.createElement('td');
-    listStatus.innerHTML = '<input type="checkbox" class="check-status">';
+    listStatus.id = lists[i].id;
+    if (lists[i].status) {
+      listStatus.innerHTML = `
+      <label class="switch">
+        <input type="checkbox" checked>
+        <span class="slider round"></span>
+      </label>`;
+    } else {
+      listStatus.innerHTML = `
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label>`;
+
+    };
+
+    listStatus.addEventListener('change', function () {
+      renderTodoListTabs(changeTodo(todoLists, this.id, 'changeStatus'))
+    });
     listLine.append(listStatus);
 
     const listDelete = document.createElement('td');
@@ -145,20 +162,16 @@ const renderProjectListForm = (projectLists) => {
 
 // Data Module 
 const todoList = (title, description, dueDate, priority, project) => {
-  let finish = false;
-  const getFinish = () => finish;
-  const setFinish = () => {
-    finish = !finish;
-    return finish;
-  };
+  let status = false;
+  let id = '_' + Math.random().toString(36).substr(2, 12);
 
   return {
+    id,
     title,
     description,
     dueDate,
     priority,
-    getFinish,
-    setFinish,
+    status,
     project
   };
 };
@@ -182,21 +195,35 @@ const addTodoList = (todoLists) => {
 };
 
 const getProjectList = (todoLists) => {
-
   const todo = todoLists.map((list) => list.project);
   const distinctToDos = [...new Set(todo)];
   return distinctToDos;
 
 }
 
-const deleteTodo = () => {
+const changeTodo = (todoLists, todoId, action) => {
+  console.log(todoLists, todoId, action);
+  if (action === 'delete') {
+    for (let i = 0; i < todoLists.length; i++) {
+      if (todoLists[i].id === todoId) {
+        todoLists.splice(i, 1);
+      }
+    }
+  };
 
-}
+  if (action === 'changeStatus') {
+    for (let i = 0; i < todoLists.length; i++) {
+      if (todoLists[i].id === todoId) {
+        todoLists[i].status = !todoLists[i].status;
+      }
+    }
+  };
+
+  return todoLists;
+};
 
 // app logic 
 const Controller = (() => {
-  const todoLists = [];
-
   const setupApp = () => {
     render(todoLists);
   }
@@ -209,7 +236,10 @@ const Controller = (() => {
   const init = () => {
     // Add sample todo lists
     todoLists.push(todoList('Buy Food', 'For Next Week', '12/3/2019', 'medium', 'Project1'));
+    todoLists.push(todoList('Pay Bill', 'For Next Month', '12/24/2019', 'high', 'Project1'));
+    todoLists.push(todoList('check the gas', 'For Next Month', '12/22/2019', 'high', 'Project1'));
     todoLists.push(todoList('Go to Bank', 'Need to pay the bill', '12/15/2019', 'high', 'Project2'));
+    todoLists.push(todoList('Buy some gifts', 'For Christmas', '12/20/2019', 'high', 'Project2'));
 
     setupApp();
     const addListButton = document.querySelector('#add-list-button');

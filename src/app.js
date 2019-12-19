@@ -57,7 +57,7 @@ const addTodoList = (todoLists) => {
 };
 
 const getProjectList = (todoLists) => {
-  const todo = todoLists.map((list) => list.project);
+  const todo = todoLists.map((list) => { list.project });
   const distinctToDos = [...new Set(todo)];
   return distinctToDos;
 };
@@ -216,7 +216,7 @@ const renderTodoListTabs = (todoLists) => {
       </tr>
     </thead>`);
     const todoListBody = document.createElement('tbody');
-    const projectTodoLists = todoLists.filter((todo) => todo.project === projectLists[i]);
+    const projectTodoLists = todoLists.filter((todo) => { todo.project === projectLists[i] });
 
     todoListTable.append(renderTodoList(projectTodoLists, todoListBody));
     tabPanel.append(todoListTable);

@@ -11,7 +11,6 @@ const todoLists = [];
 // UI 
 const render = (todoLists) => {
   let projectLists = getProjectList(todoLists);
-
   if (projectLists.length !== 0) renderProjectTabs(projectLists);
   if (todoList.length !== 0) renderTodoListTabs(todoLists);
 
@@ -115,7 +114,6 @@ const renderTodoList = (lists, node) => {
     listLine.append(listPriority);
 
     const listStatus = document.createElement('td');
-    listStatus.id = lists[i].id;
     if (lists[i].status) {
       listStatus.innerHTML = `
       <label class="switch">
@@ -132,13 +130,16 @@ const renderTodoList = (lists, node) => {
     };
 
     listStatus.addEventListener('change', function () {
-      renderTodoListTabs(changeTodo(todoLists, this.id, 'changeStatus'))
+      renderTodoListTabs(changeTodo(todoLists, lists[i].id, 'changeStatus'))
     });
     listLine.append(listStatus);
 
     const listDelete = document.createElement('td');
     listDelete.setAttribute('class', "text-secondary delete-todo");
     listDelete.innerHTML = '<i class="fas fa-trash-alt fa-lg"></i>';
+    listDelete.addEventListener('click', function () {
+      renderTodoListTabs(changeTodo(todoLists, lists[i].id, 'delete'));
+    })
     listLine.append(listDelete);
 
     node.append(listLine);
@@ -202,7 +203,7 @@ const getProjectList = (todoLists) => {
 }
 
 const changeTodo = (todoLists, todoId, action) => {
-  console.log(todoLists, todoId, action);
+  console.log(todoId);
   if (action === 'delete') {
     for (let i = 0; i < todoLists.length; i++) {
       if (todoLists[i].id === todoId) {
@@ -210,6 +211,8 @@ const changeTodo = (todoLists, todoId, action) => {
       }
     }
   };
+
+  console.log(todoLists, todoId, action);
 
   if (action === 'changeStatus') {
     for (let i = 0; i < todoLists.length; i++) {

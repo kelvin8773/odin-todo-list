@@ -4,10 +4,12 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
+import { differenceInDays } from 'date-fns'
+import { isAfter } from 'date-fns';
 import './style.css';
 
-const todoLists = [];
 
+const todoLists = [];
 // Data Module
 const todoList = (title, description, dueDate, priority, project) => {
   const status = false;
@@ -53,7 +55,13 @@ const addTodoList = (todoLists) => {
       inputPriority,
       inputProject));
   }
+  storeLocaly('todo', todoLists);
 };
+
+const storeLocaly = (key,todoLists) =>{
+  window.localStorage.setItem(key, todoLists);
+};
+
 
 const getProjectList = (todoLists) => {
   const todo = todoLists.map((list) => list.project);
@@ -84,6 +92,7 @@ const changeTodo = (todoLists, todoId, action) => {
 // UI
 const renderTodoList = (lists, node) => {
   node.innerHTML = '';
+
   for (let i = 0; i < lists.length; i += 1) {
     const listLine = document.createElement('tr');
     if (lists[i].status) {
@@ -105,7 +114,21 @@ const renderTodoList = (lists, node) => {
     listLine.append(listDescription);
 
     const listDueDate = document.createElement('td');
-    listDueDate.innerText = lists[i].dueDate;
+    const today = new Date();
+    const dueDate = new Date(lists[i].dueDate);
+    const daysLeft = differenceInDays(today, dueDate);
+    if(isAfter(today, dueDate)){
+      if(daysLeft > 1)
+        listDueDate.innerText = `${daysLeft} days Left`;
+      else if(daysLeft == 1){
+        listDueDate.innerText = `${daysLeft} day Left`;
+      }
+      else 
+        listDueDate.innerText = `Due to today`;        
+    }
+    else{
+       listDueDate.innerText = `${Math.abs(daysLeft)} days passed`
+    }
     listLine.append(listDueDate);
 
     const listPriority = document.createElement('td');
@@ -225,6 +248,7 @@ const renderTodoListTabs = (todoLists) => {
 
 const render = (todoLists) => {
   const projectLists = getProjectList(todoLists);
+
   if (projectLists.length !== 0) renderProjectTabs(projectLists);
   if (todoList.length !== 0) renderTodoListTabs(todoLists);
 

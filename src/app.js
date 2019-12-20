@@ -4,10 +4,8 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
-import { differenceInDays } from 'date-fns'
-import { isAfter } from 'date-fns';
+import { isAfter, formatDistanceToNow } from 'date-fns'
 import './style.css';
-
 
 const todoLists = [];
 // Data Module
@@ -27,11 +25,11 @@ const todoList = (title, description, dueDate, priority, project) => {
 };
 
 const addTodoList = (todoLists) => {
-  const inputTitle = document.querySelector('#todoTitle').value;
-  const inputDescription = document.querySelector('#todoDescription').value;
-  let inputDueDate = document.querySelector('#dueDate').value;
-  const inputPriority = document.querySelector('#todoPriority').value;
-  const inputProject = document.getElementById('todoProject').value;
+  const inputTitle = document.getElementById('todoTitle').value;
+  const inputDescription = document.getElementById('todoDescription').value;
+  let inputDueDate = document.getElementById('dueDate').value;
+  const inputPriority = document.getElementById('todoPriority').value;
+  const inputProject = document.getElementById('todoProject').value.split(' ').join('_');
 
   if (inputTitle.length === 0 || inputProject.length === 0) {
     const alertBar = document.getElementById('alert-bar');
@@ -45,6 +43,7 @@ const addTodoList = (todoLists) => {
     `;
     document.querySelector('.alert');
   } else {
+
     if (inputDueDate.length === 0) {
       const today = new Date();
       inputDueDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
@@ -54,14 +53,22 @@ const addTodoList = (todoLists) => {
       inputDueDate,
       inputPriority,
       inputProject));
+
+    document.getElementById('todoTitle').value = '';
+    document.getElementById('todoDescription').value = '';
+    document.getElementById('dueDate').value = '';
+    document.getElementById('todoPriority').value = '';
+    document.getElementById('todoProject').value = '';
+
   }
+
+
   storeLocaly('todo', todoLists);
 };
 
-const storeLocaly = (key,todoLists) =>{
+const storeLocaly = (key, todoLists) => {
   window.localStorage.setItem(key, todoLists);
 };
-
 
 const getProjectList = (todoLists) => {
   const todo = todoLists.map((list) => list.project);
@@ -114,20 +121,12 @@ const renderTodoList = (lists, node) => {
     listLine.append(listDescription);
 
     const listDueDate = document.createElement('td');
-    const today = new Date();
     const dueDate = new Date(lists[i].dueDate);
-    const daysLeft = differenceInDays(today, dueDate);
-    if(isAfter(today, dueDate)){
-      if(daysLeft > 1)
-        listDueDate.innerText = `${daysLeft} days Left`;
-      else if(daysLeft == 1){
-        listDueDate.innerText = `${daysLeft} day Left`;
-      }
-      else 
-        listDueDate.innerText = `Due to today`;        
-    }
-    else{
-       listDueDate.innerText = `${Math.abs(daysLeft)} days passed`
+    const daysDiff = formatDistanceToNow(dueDate);
+    if (isAfter(dueDate, new Date())) {
+      listDueDate.innerText = `${daysDiff} to go`;
+    } else {
+      listDueDate.innerText = `${daysDiff} pass due`;
     }
     listLine.append(listDueDate);
 

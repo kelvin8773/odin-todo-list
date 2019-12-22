@@ -18,7 +18,7 @@ const checkStorage = (id) => {
   return false;
 };
 
-const getFromStorage = (id) => { JSON.parse(window.localStorage.getItem(id)); };
+const getFromStorage = (id) => { return JSON.parse(window.localStorage.getItem(id)); };
 
 const setToStorage = (id, data) => {
   if (checkBrowserSupport()) {

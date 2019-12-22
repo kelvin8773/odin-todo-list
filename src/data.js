@@ -128,9 +128,6 @@ const Data = (() => {
     updateTodo,
     deleteTodo,
     getProjects,
-    checkStorage,
-    getFromStorage,
-    updateStorage,
     init,
   };
 })();

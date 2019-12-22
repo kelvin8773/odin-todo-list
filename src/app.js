@@ -7,7 +7,39 @@ import '@fortawesome/fontawesome-free/js/brands';
 import { isAfter, formatDistanceToNow } from 'date-fns'
 import './style.css';
 
-const todoLists = [];
+let todoLists = [];
+
+// Local Storage
+const checkBrowserSupport = () => {
+  return typeof (Storage) !== 'undefined';
+}
+
+const checkStorage = (id) => {
+  const temp = JSON.parse(window.localStorage.getItem(id));
+  if (temp && temp.length !== 0) return true;
+  return false;
+}
+
+const initStorage = (id, data) => {
+  if (checkStorage(id)) {
+    return getFromStorage(id);
+  } else {
+    setToStorage(id, data);
+    return data;
+  }
+};
+
+const getFromStorage = (id) => {
+  return JSON.parse(window.localStorage.getItem(id));
+}
+
+const setToStorage = (id, data) => {
+  if (checkBrowserSupport()) {
+    window.localStorage.setItem(id, JSON.stringify(data));
+  }
+}
+
+
 // Data Module
 const todoList = (title, description, dueDate, priority, project) => {
   const status = false;
@@ -48,26 +80,21 @@ const addTodoList = (todoLists) => {
       const today = new Date();
       inputDueDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
     }
+
     todoLists.push(todoList(inputTitle,
       inputDescription,
       inputDueDate,
       inputPriority,
       inputProject));
 
+    setToStorage('todoLists', todoLists);
+
     document.getElementById('todoTitle').value = '';
     document.getElementById('todoDescription').value = '';
     document.getElementById('dueDate').value = '';
     document.getElementById('todoPriority').value = '';
     document.getElementById('todoProject').value = '';
-
   }
-
-
-  storeLocaly('todo', todoLists);
-};
-
-const storeLocaly = (key, todoLists) => {
-  window.localStorage.setItem(key, todoLists);
 };
 
 const getProjectList = (todoLists) => {
@@ -156,7 +183,7 @@ const renderTodoList = (lists, node) => {
 
     const listDelete = document.createElement('td');
     listDelete.setAttribute('class', 'text-secondary delete-todo');
-    listDelete.innerHTML = '<i class="fas fa-trash-alt fa-lg"></i>';
+    listDelete.innerHTML = '<i class="fas fa-trash-alt fa-lg ml-3"></i>';
     listDelete.addEventListener('click', () => {
       renderTodoListTabs(changeTodo(todoLists, lists[i].id, 'delete'));
     });
@@ -256,23 +283,22 @@ const render = (todoLists) => {
 
 // app logic
 const Controller = (() => {
-  const setupApp = () => {
-    render(todoLists);
-  };
 
   const runApp = () => {
     addTodoList(todoLists);
-    setupApp();
+    render(todoLists);
   };
 
   const init = () => {
-    // Add sample todo lists
     todoLists.push(todoList('Buy Food', 'For Next Week', '12/3/2019', 'medium', 'Project1'));
     todoLists.push(todoList('Pay Bill', 'For Next Month', '12/24/2019', 'high', 'Project1'));
-    todoLists.push(todoList('check the gas', 'For Next Month', '12/22/2019', 'high', 'Project1'));
+    todoLists.push(todoList('Check the gas', 'For Next Month', '12/22/2019', 'high', 'Project1'));
     todoLists.push(todoList('Go to Bank', 'Need to pay the bill', '12/15/2019', 'high', 'Project2'));
     todoLists.push(todoList('Buy some gifts', 'For Christmas', '12/20/2019', 'high', 'Project2'));
-    setupApp();
+
+    todoLists = initStorage('todoLists', todoLists);
+
+    render(todoLists);
     const addListButton = document.getElementById('add-list-button');
     addListButton.addEventListener('click', runApp);
   };

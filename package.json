@@ -3,8 +3,23 @@
   "version": "1.0.0",
   "description": "## Installation",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
+    "bootstrap": "^4.4.1",
+    "date-fns": "^2.8.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.0"
+  },
   "devDependencies": {
+    "css-loader": "^3.3.0",
+    "eslint": "^6.7.2",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "install-peers": "^1.0.3",
+    "style-loader": "^1.0.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },

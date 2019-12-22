@@ -18,15 +18,7 @@ const checkStorage = (id) => {
   return false;
 };
 
-const initStorage = (id, data) => {
-  if (checkStorage(id)) {
-    return getFromStorage(id);
-  }
-  setToStorage(id, data);
-  return data;
-};
-
-const getFromStorage = (id) => JSON.parse(window.localStorage.getItem(id));
+const getFromStorage = (id) => { JSON.parse(window.localStorage.getItem(id)) };
 
 const setToStorage = (id, data) => {
   if (checkBrowserSupport()) {
@@ -34,6 +26,13 @@ const setToStorage = (id, data) => {
   }
 };
 
+const initStorage = (id, data) => {
+  if (checkStorage(id)) {
+    return getFromStorage(id);
+  }
+  setToStorage(id, data);
+  return data;
+};
 
 // Data Module
 const todoList = (title, description, dueDate, priority, project) => {

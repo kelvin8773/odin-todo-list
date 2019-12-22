@@ -4,40 +4,35 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
-import { isAfter, formatDistanceToNow } from 'date-fns'
+import { isAfter, formatDistanceToNow } from 'date-fns';
 import './style.css';
 
 let todoLists = [];
 
 // Local Storage
-const checkBrowserSupport = () => {
-  return typeof (Storage) !== 'undefined';
-}
+const checkBrowserSupport = () => typeof (Storage) !== 'undefined';
 
 const checkStorage = (id) => {
   const temp = JSON.parse(window.localStorage.getItem(id));
   if (temp && temp.length !== 0) return true;
   return false;
-}
+};
 
 const initStorage = (id, data) => {
   if (checkStorage(id)) {
     return getFromStorage(id);
-  } else {
-    setToStorage(id, data);
-    return data;
   }
+  setToStorage(id, data);
+  return data;
 };
 
-const getFromStorage = (id) => {
-  return JSON.parse(window.localStorage.getItem(id));
-}
+const getFromStorage = (id) => JSON.parse(window.localStorage.getItem(id));
 
 const setToStorage = (id, data) => {
   if (checkBrowserSupport()) {
     window.localStorage.setItem(id, JSON.stringify(data));
   }
-}
+};
 
 
 // Data Module
@@ -75,7 +70,6 @@ const addTodoList = (todoLists) => {
     `;
     document.querySelector('.alert');
   } else {
-
     if (inputDueDate.length === 0) {
       const today = new Date();
       inputDueDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
@@ -120,6 +114,7 @@ const changeTodo = (todoLists, todoId, action) => {
     }
   }
 
+  setToStorage('todoLists', todoLists);
   return todoLists;
 };
 
@@ -283,7 +278,6 @@ const render = (todoLists) => {
 
 // app logic
 const Controller = (() => {
-
   const runApp = () => {
     addTodoList(todoLists);
     render(todoLists);

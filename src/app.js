@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/js/regular';
 import '@fortawesome/fontawesome-free/js/brands';
 import { isAfter, formatDistanceToNow } from 'date-fns';
 import Data from './data';
+import UI from './ui';
 import './style.css';
 
 let todoLists = [];
@@ -172,6 +173,10 @@ const render = (todoLists) => {
 
 // app logic
 const Controller = (() => {
+  const setupApp = () => {
+
+  }
+
   const runApp = () => {
     Data.addTodo();
     todoLists = Data.getData();

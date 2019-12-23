@@ -108,10 +108,8 @@ const Data = (() => {
 
     if (checkBrowserSupport()) {
       if (checkStorage()) {
-        console.log('have storage');
         data = getFromStorage();
       } else {
-        console.log('No Storage');
         updateStorage(storageId, data);
       }
 

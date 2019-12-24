@@ -17,40 +17,15 @@ const Data = (() => {
     };
   };
 
-  const addTodo = () => {
-    const inputTitle = document.getElementById('todoTitle').value;
-    const inputDescription = document.getElementById('todoDescription').value;
-    let inputDueDate = document.getElementById('dueDate').value;
-    const inputPriority = document.getElementById('todoPriority').value;
-    const inputProject = document.getElementById('todoProject').value.split(' ').join('_');
-
-    if (inputTitle.length === 0 || inputProject.length === 0) {
-      const alertBar = document.getElementById('alert-bar');
-      alertBar.innerHTML = `
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>Be Careful!</strong> Title and Project must be filled out!
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      `;
-      document.querySelector('.alert');
-    } else {
-      if (inputDueDate.length === 0) {
-        const today = new Date();
-        inputDueDate = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
-      }
-
-      data.push(todoList(inputTitle,
-        inputDescription,
-        inputDueDate,
-        inputPriority,
-        inputProject));
-
-      updateStorage(storageId, data);
-
-
-    }
+  const addTodo = (todoLists = data, todo) => {
+    todoLists.push(todoList(
+      todo.title,
+      todo.description,
+      todo.dueDate,
+      todo.priority,
+      todo.project
+    ));
+    updateStorage(storageId, todoLists);
   };
 
   const updateTodo = (todoLists = data, todoId) => {
@@ -71,7 +46,8 @@ const Data = (() => {
     updateStorage(storageId, todoLists);
   }
 
-  const getProjects = (todoLists = data) => {
+  const getProjects = () => {
+    const todoLists = getTodo();
     const todo = todoLists.map((list) => list.project);
     return [...new Set(todo)];
   }
@@ -84,7 +60,7 @@ const Data = (() => {
     return false;
   }
 
-  const getFromStorage = (id = storageId) => { return JSON.parse(window.localStorage.getItem(id)); }
+  const getFromStorage = (id = storageId) => JSON.parse(window.localStorage.getItem(id));
 
   const updateStorage = (id = storageId, data) => {
     if (checkBrowserSupport()) {
@@ -92,10 +68,9 @@ const Data = (() => {
     }
   }
 
-  const getData = () => data;
+  const getTodo = () => data;
 
   const init = () => {
-    // add demo data;
     data.push(todoList('Buy Food', 'For Next Week', '12/3/2019', 'medium', 'Project1'));
     data.push(todoList('Pay Bill', 'For Next Month', '12/24/2019', 'high', 'Project1'));
     data.push(todoList('Check the gas', 'For Next Month', '12/22/2019', 'high', 'Project1'));
@@ -108,7 +83,6 @@ const Data = (() => {
       } else {
         updateStorage(storageId, data);
       }
-
     } else {
       console.log('This Browser Not Support Local Storage!');
     }
@@ -117,7 +91,7 @@ const Data = (() => {
   }
 
   return {
-    getData,
+    getTodo,
     addTodo,
     updateTodo,
     deleteTodo,

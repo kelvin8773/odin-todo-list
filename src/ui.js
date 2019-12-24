@@ -1,17 +1,18 @@
 import Data from './data'
-import { isAfter, formatDistanceToNow } from 'date-fns';
+import { isAfter, formatDistanceToNow, lightFormat, addDays } from 'date-fns';
 
 const UI = (() => {
 
   const renderTodo = (todo) => {
     const todoLine = document.createElement('tr');
+    todoLine.setAttribute('id', todo.id);
     if (todo.status) {
       todoLine.setAttribute('class', 'text-danger cross-text');
     }
 
     const listID = document.createElement('th');
     listID.scope = 'row';
-    listID.innerText = todo.id.slice(1, 3);
+    listID.innerText = '#';
     todoLine.append(listID);
 
     const listTitle = document.createElement('td');
@@ -38,6 +39,7 @@ const UI = (() => {
     todoLine.append(listPriority);
 
     const listStatus = document.createElement('td');
+    listStatus.setAttribute('id', `${todo.id}-status`);
     if (todo.status) {
       listStatus.innerHTML = `
         <label class="switch">
@@ -51,104 +53,55 @@ const UI = (() => {
           <span class="slider round"></span>
         </label>`;
     }
-    // listStatus.addEventListener('change', () => {
-    //   Data.updateTodo(todoLists, todo.id);
-    //   renderTodoListTabs(Data.getData());
-    // });
     todoLine.append(listStatus);
 
     const listDelete = document.createElement('td');
+    listDelete.setAttribute('id', `${todo.id}-delete`);
     listDelete.setAttribute('class', 'text-secondary delete-todo');
     listDelete.innerHTML = '<i class="fas fa-trash-alt fa-lg ml-3"></i>';
-    // listDelete.addEventListener('click', () => {
-    //   Data.deleteTodo(todoLists, todo.id);
-    //   renderTodoListTabs(Data.getData());
-    // });
     todoLine.append(listDelete);
 
     return todoLine;
   }
 
-  const renderTodoList = (lists, node) => {
-    node.innerHTML = '';
-    for (let i = 0; i < lists.length; i += 1) {
-      node.append(renderTodo(lists[i]));
+  const renderTodoList = (todoList, project, selected) => {
+    const todoListTab = document.createElement('div');
+    if (selected) {
+      todoListTab.setAttribute('class', 'tab-pane fade show active');
+    } else {
+      todoListTab.setAttribute('class', 'tab-pane fade');
     }
-    return node;
-  };
+    todoListTab.setAttribute('id', project);
+    todoListTab.setAttribute('role', 'tabpanel');
+    todoListTab.setAttribute('aria-labelledby', `${project}-tab`);
 
-  const updateForm = (projects) => {
-    const addListForm = document.getElementById('add-list-form');
-    const projectDatalist = document.getElementById('project-Lists');
-    projectDatalist.innerHTML = '';
+    const todoListTable = document.createElement('table');
+    todoListTable.setAttribute('class', 'table table-hover');
+    todoListTable.setAttribute('cellspacing', '0');
+    todoListTable.insertAdjacentHTML('afterbegin',
+      `<thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">DueDate</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Status</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>`);
 
-    for (let i = 0; i < projects.length; i += 1) {
-      const projectListOption = document.createElement('option');
-      projectListOption.value = projects[i];
-      projectDatalist.append(projectListOption);
+    const todoListBody = document.createElement('tbody');
+    todoListBody.setAttribute('id', `${project}-body`);
+    todoListBody.innerHTML = '';
+    for (let i = 0; i < todoList.length; i += 1) {
+      todoListBody.append(renderTodo(todoList[i]));
     }
-    addListForm.append(projectDatalist);
 
-    document.getElementById('todoTitle').value = '';
-    document.getElementById('todoDescription').value = '';
-    document.getElementById('dueDate').value = '';
-    document.getElementById('todoPriority').value = '';
-    document.getElementById('todoProject').value = '';
-  };
+    todoListTable.append(todoListBody);
+    todoListTab.append(todoListTable);
 
-  const renderProjectTabs = (projects) => {
-    const projectTabNode = document.getElementById('project-tabs');
-    // projectTabNode.innerHTML = '';
-
-    for (let i = 0; i < projects.length; i += 1) {
-      const projectTab = document.getElementById(`${projects[i]}-tab`);
-      if (!projectTab) {
-        let selected = false;
-        if (i === 0) selected = true;
-        projectTabNode.append(renderProject(projects[i], selected));
-      };
-    }
-  };
-
-  const renderTodoListTabs = (todoLists) => {
-    const projects = Data.getProjects();
-    const tabContent = document.getElementById('nav-tabContent');
-    tabContent.innerHTML = '';
-
-    for (let i = 0; i < projects.length; i += 1) {
-      const tabPanel = document.createElement('div');
-      if (i === 0) {
-        tabPanel.setAttribute('class', 'tab-pane fade show active');
-      } else {
-        tabPanel.setAttribute('class', 'tab-pane fade');
-      }
-      tabPanel.setAttribute('id', projects[i]);
-      tabPanel.setAttribute('role', 'tabpanel');
-      tabPanel.setAttribute('aria-labelledby', `${projects[i]}-tab`);
-
-      const todoListTable = document.createElement('table');
-      todoListTable.setAttribute('class', 'table table-hover');
-      todoListTable.setAttribute('cellspacing', '0');
-      todoListTable.insertAdjacentHTML('afterbegin',
-        `<thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Title</th>
-          <th scope="col">Description</th>
-          <th scope="col">DueDate</th>
-          <th scope="col">Priority</th>
-          <th scope="col">Status</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>`);
-      const todoListBody = document.createElement('tbody');
-      const projectTodoLists = todoLists.filter((todo) => todo.project === projects[i]);
-
-      todoListTable.append(renderTodoList(projectTodoLists, todoListBody));
-
-      tabPanel.append(todoListTable);
-      tabContent.append(tabPanel);
-    }
+    return todoListTab;
   };
 
   const renderProject = (project, selected) => {
@@ -171,21 +124,60 @@ const UI = (() => {
     return projectTab;
   }
 
+  const getTodo = () => {
+    const inputTitle = document.getElementById('todoTitle').value;
+    const inputDescription = document.getElementById('todoDescription').value;
+    let inputDueDate = document.getElementById('dueDate').value;
+    const inputPriority = document.getElementById('todoPriority').value;
+    const inputProject = document.getElementById('todoProject').value.split(' ').join('_');
 
+    if (inputTitle.length === 0 || inputProject.length === 0) {
+      const alertBar = document.getElementById('alert-bar');
+      alertBar.innerHTML = `
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Be Careful!</strong> Title and Project must be filled out!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      `;
+      document.querySelector('.alert');
+    } else {
+      if (inputDueDate.length === 0) {
+        inputDueDate = lightFormat(addDays(new Date(), 1), 'MM/dd/yyyy');
+      }
 
-  const render = (todoLists) => {
-    const projects = Data.getProjects();
+      return {
+        title: inputTitle,
+        description: inputDescription,
+        dueDate: inputDueDate,
+        priority: inputPriority,
+        project: inputProject
+      }
+    }
+  }
 
-    if (projects.length !== 0) renderProjectTabs(projects);
-    if (todoLists.length !== 0) renderTodoListTabs(todoLists);
+  const updateForm = (projects) => {
+    const addListForm = document.getElementById('add-list-form');
+    const projectDatalist = document.getElementById('project-Lists');
+    projectDatalist.innerHTML = '';
 
-    updateForm(projects);
+    for (let i = 0; i < projects.length; i += 1) {
+      const projectListOption = document.createElement('option');
+      projectListOption.value = projects[i];
+      projectDatalist.append(projectListOption);
+    }
+    addListForm.append(projectDatalist);
+
+    document.getElementById('add-list-form').reset();
   };
 
   return {
-    render,
-    updateForm,
     renderTodo,
+    renderTodoList,
+    renderProject,
+    updateForm,
+    getTodo,
   };
 })();
 

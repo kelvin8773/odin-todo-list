@@ -23,7 +23,7 @@
 
     <div class="container">
         <div id="alert-bar" class="my-3"></div>
-        <div id="add-list-form" class="container my-4 w-50">
+        <form id="add-list-form" class="container my-4 w-50">
             <div class="form-group row">
                 <label for="todoTitle" class="col-md-4 col-form-label">Title</label>
                 <div class="col-md-8">
@@ -39,16 +39,16 @@
             <div class="form-group row">
                 <label for="dueDate" class="col-md-4 col-form-label">Due Date</label>
                 <div class="col-md-8">
-                    <input type="date" class="form-control" id="dueDate">
+                    <input type="date" class="form-control" id="dueDate" placeholder="Tomorrow">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="todoPriority" class="col-md-4 col-form-label">Priority</label>
                 <div class="col-md-8">
-                    <select id="todoPriority" class="custom-select ">
-                        <option selected value="low">Select Priority For this task</option>
-                        <option value="low">LOW</option>
+                    <select id="todoPriority" class="custom-select">
+                        <option selected value="low">Select Priority For This Task.</option>
+                        <option value="low" selected>LOW</option>
                         <option value="medium">MEDIUM</option>
                         <option value="high">HIGH</option>
                     </select>
@@ -65,10 +65,10 @@
 
             <div class="form-group row ml-5 pl-5">
                 <div class="col-md-6 mx-auto">
-                    <button id="add-list-button" class="btn btn-primary btn-block">Add Todo List</button>
+                    <div id="add-list-button" class="btn btn-primary btn-block">Add Todo List</div>
                 </div>
             </div>
-        </div>
+        </form>
 
         <hr class="border my-4">
 

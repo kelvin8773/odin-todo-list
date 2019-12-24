@@ -49,11 +49,7 @@ const Data = (() => {
 
       updateStorage(storageId, data);
 
-      document.getElementById('todoTitle').value = '';
-      document.getElementById('todoDescription').value = '';
-      document.getElementById('dueDate').value = '';
-      document.getElementById('todoPriority').value = '';
-      document.getElementById('todoProject').value = '';
+
     }
   };
 

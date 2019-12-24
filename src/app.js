@@ -18,8 +18,8 @@ const Controller = (() => {
     for (let i = 0; i < projects.length; i += 1) {
       const projectTab = document.getElementById(`${projects[i]}-tab`);
       const todoTab = document.getElementById(`${projects[i]}`);
-      const todoList = todoLists.filter((todo) => todo.project === projects[i]);
-      const todoIds = todoList.map((todo) => todo.id);
+      const todoList = todoLists.filter(todo => todo.project === projects[i]);
+      const todoIds = todoList.map(todo => todo.id);
       const selected = (i === 0);
 
       if (!projectTab) {

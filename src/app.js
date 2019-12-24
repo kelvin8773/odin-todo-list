@@ -19,7 +19,8 @@ const Controller = (() => {
       const projectTab = document.getElementById(`${projects[i]}-tab`);
       const todoTab = document.getElementById(`${projects[i]}`);
       const todoList = todoLists.filter((todo) => {
-        todo.project === projects[i]});
+        return todo.project === projects[i]; 
+      });
       const todoIds = todoList.map((todo) => todo.id);
       const selected = (i === 0);
 

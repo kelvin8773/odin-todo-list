@@ -1,7 +1,6 @@
 import {
   isAfter, formatDistanceToNow, lightFormat, addDays,
 } from 'date-fns';
-import Data from './data';
 
 const UI = (() => {
   const renderTodo = (todo) => {
@@ -156,6 +155,7 @@ const UI = (() => {
         project: inputProject,
       };
     }
+    return {};
   };
 
   const updateForm = (projects) => {

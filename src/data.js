@@ -23,7 +23,7 @@ const Data = (() => {
       todo.description,
       todo.dueDate,
       todo.priority,
-      todo.project
+      todo.project,
     ));
     updateStorage(storageId, todoLists);
   };
@@ -35,7 +35,7 @@ const Data = (() => {
       }
     }
     updateStorage(storageId, todoLists);
-  }
+  };
 
   const deleteTodo = (todoLists = data, todoId) => {
     for (let i = 0; i < todoLists.length; i += 1) {
@@ -44,13 +44,13 @@ const Data = (() => {
       }
     }
     updateStorage(storageId, todoLists);
-  }
+  };
 
   const getProjects = () => {
     const todoLists = getTodo();
     const todo = todoLists.map((list) => list.project);
     return [...new Set(todo)];
-  }
+  };
 
   const checkBrowserSupport = () => typeof (Storage) !== 'undefined';
 
@@ -58,7 +58,7 @@ const Data = (() => {
     const temp = JSON.parse(window.localStorage.getItem(id));
     if (temp && temp.length !== 0) return true;
     return false;
-  }
+  };
 
   const getFromStorage = (id = storageId) => JSON.parse(window.localStorage.getItem(id));
 
@@ -66,7 +66,7 @@ const Data = (() => {
     if (checkBrowserSupport()) {
       window.localStorage.setItem(id, JSON.stringify(data));
     }
-  }
+  };
 
   const getTodo = () => data;
 
@@ -88,7 +88,7 @@ const Data = (() => {
     }
 
     return data;
-  }
+  };
 
   return {
     getTodo,
@@ -101,5 +101,3 @@ const Data = (() => {
 })();
 
 export default Data;
-
-

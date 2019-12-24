@@ -1,8 +1,9 @@
-import Data from './data'
-import { isAfter, formatDistanceToNow, lightFormat, addDays } from 'date-fns';
+import {
+  isAfter, formatDistanceToNow, lightFormat, addDays,
+} from 'date-fns';
+import Data from './data';
 
 const UI = (() => {
-
   const renderTodo = (todo) => {
     const todoLine = document.createElement('tr');
     todoLine.setAttribute('id', todo.id);
@@ -62,7 +63,7 @@ const UI = (() => {
     todoLine.append(listDelete);
 
     return todoLine;
-  }
+  };
 
   const renderTodoList = (todoList, project, selected) => {
     const todoListTab = document.createElement('div');
@@ -122,7 +123,7 @@ const UI = (() => {
     projectTab.innerText = project;
 
     return projectTab;
-  }
+  };
 
   const getTodo = () => {
     const inputTitle = document.getElementById('todoTitle').value;
@@ -152,10 +153,10 @@ const UI = (() => {
         description: inputDescription,
         dueDate: inputDueDate,
         priority: inputPriority,
-        project: inputProject
-      }
+        project: inputProject,
+      };
     }
-  }
+  };
 
   const updateForm = (projects) => {
     const addListForm = document.getElementById('add-list-form');
@@ -182,4 +183,3 @@ const UI = (() => {
 })();
 
 export default UI;
-

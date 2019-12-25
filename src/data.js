@@ -61,7 +61,7 @@ const Data = (() => {
 
   const getProjects = () => {
     const todoLists = getTodo();
-    const todo = todoLists.map((list) => list.project);
+    const todo = todoLists.map(list => list.project);
     return [...new Set(todo)];
   };
 

@@ -2,6 +2,24 @@ const Data = (() => {
   let data = [];
   const storageId = 'todo_Lists';
 
+  const checkBrowserSupport = () => typeof (Storage) !== 'undefined';
+
+  const checkStorage = (id = storageId) => {
+    const temp = JSON.parse(window.localStorage.getItem(id));
+    if (temp && temp.length !== 0) return true;
+    return false;
+  };
+
+  const getFromStorage = (id = storageId) => JSON.parse(window.localStorage.getItem(id));
+
+  const updateStorage = (id = storageId, data) => {
+    if (checkBrowserSupport()) {
+      window.localStorage.setItem(id, JSON.stringify(data));
+    }
+  };
+
+  const getTodo = () => data;
+
   const todoList = (title, description, dueDate, priority, project) => {
     const status = false;
     const id = `_${Math.random().toString(36).substr(2, 12)}`;
@@ -46,24 +64,6 @@ const Data = (() => {
     const todo = todoLists.map((list) => list.project);
     return [...new Set(todo)];
   };
-
-  const checkBrowserSupport = () => typeof (Storage) !== 'undefined';
-
-  const checkStorage = (id = storageId) => {
-    const temp = JSON.parse(window.localStorage.getItem(id));
-    if (temp && temp.length !== 0) return true;
-    return false;
-  };
-
-  const getFromStorage = (id = storageId) => JSON.parse(window.localStorage.getItem(id));
-
-  const updateStorage = (id = storageId, data) => {
-    if (checkBrowserSupport()) {
-      window.localStorage.setItem(id, JSON.stringify(data));
-    }
-  };
-
-  const getTodo = () => data;
 
   const init = () => {
     data.push(todoList('Buy Food', 'For Next Week', '12/3/2019', 'medium', 'Project1'));

@@ -14,21 +14,21 @@ const Controller = (() => {
   const projectNode = document.getElementById('project-tabs');
   const todoNode = document.getElementById('nav-tabContent');
 
-  const addListener = (todo) => {
-    const todoStatus = document.getElementById(`${todo.id}-status`);
-    todoStatus.addEventListener('change', () => {
-      Data.updateTodo(todo.id);
-      updateApp();
-    });
-
-    const todoDelete = document.getElementById(`${todo.id}-delete`);
-    todoDelete.addEventListener('click', () => {
-      Data.deleteTodo(todo.id);
-      updateApp();
-    });
-  };
-
   const updateApp = () => {
+    const addListener = (todo) => {
+      const todoStatus = document.getElementById(`${todo.id}-status`);
+      todoStatus.addEventListener('change', () => {
+        Data.updateTodo(todo.id);
+        updateApp();
+      });
+
+      const todoDelete = document.getElementById(`${todo.id}-delete`);
+      todoDelete.addEventListener('click', () => {
+        Data.deleteTodo(todo.id);
+        updateApp();
+      });
+    };
+
     for (const project of projects) {
       const projectTab = document.getElementById(`${project}-tab`);
       const todoTab = document.getElementById(project);

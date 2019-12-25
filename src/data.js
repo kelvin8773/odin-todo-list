@@ -35,28 +35,31 @@ const Data = (() => {
     };
   };
 
-  const addTodo = (todoLists, todo) => {
+  const addTodo = (todo) => {
     const t = todoList(todo.title, todo.description, todo.dueDate, todo.priority, todo.project);
-    todoLists.push(t);
-    updateStorage(storageId, todoLists);
+    data.push(t);
+    updateStorage(storageId, data);
+    return data;
   };
 
-  const updateTodo = (todoLists = data, todoId) => {
-    for (let i = 0; i < todoLists.length; i += 1) {
-      if (todoLists[i].id === todoId) {
-        todoLists[i].status = !todoLists[i].status;
+  const updateTodo = (todoId) => {
+    for (let i = 0; i < data.length; i += 1) {
+      if (data[i].id === todoId) {
+        data[i].status = !data[i].status;
       }
     }
-    updateStorage(storageId, todoLists);
+    updateStorage(storageId, data);
+    return data;
   };
 
-  const deleteTodo = (todoLists = data, todoId) => {
-    for (let i = 0; i < todoLists.length; i += 1) {
-      if (todoLists[i].id === todoId) {
-        todoLists.splice(i, 1);
+  const deleteTodo = (todoId) => {
+    for (let i = 0; i < data.length; i += 1) {
+      if (data[i].id === todoId) {
+        data.splice(i, 1);
       }
     }
-    updateStorage(storageId, todoLists);
+    updateStorage(storageId, data);
+    return data;
   };
 
   const getProjects = () => {

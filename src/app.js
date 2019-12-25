@@ -14,27 +14,43 @@ const Controller = (() => {
   const projectNode = document.getElementById('project-tabs');
   const todoNode = document.getElementById('nav-tabContent');
 
+  const addListener = (todo) => {
+    const todoStatus = document.getElementById(`${todo.id}-status`);
+    todoStatus.addEventListener('change', () => {
+      Data.updateTodo(todo.id);
+      updateApp();
+    });
+
+    const todoDelete = document.getElementById(`${todo.id}-delete`);
+    todoDelete.addEventListener('click', () => {
+      Data.deleteTodo(todo.id);
+      updateApp();
+    });
+  };
+
   const updateApp = () => {
-    for (let i = 0; i < projects.length; i += 1) {
-      const projectTab = document.getElementById(`${projects[i]}-tab`);
-      const todoTab = document.getElementById(`${projects[i]}`);
-      const todoList = todoLists.filter(todo => todo.project === projects[i]);
+    for (const project of projects) {
+      const projectTab = document.getElementById(`${project}-tab`);
+      const todoTab = document.getElementById(project);
+      const todoList = todoLists.filter(todo => todo.project === project);
       const todoIds = todoList.map(todo => todo.id);
-      const selected = (i === 0);
+      const selected = (projects.indexOf(project) === 0);
 
       if (!projectTab) {
-        projectNode.append(UI.renderProject(projects[i], selected));
+        projectNode.append(UI.renderProject(project, selected));
       }
 
       if (!todoTab) {
-        todoNode.append(UI.renderTodoList(todoList, projects[i], selected));
+        todoNode.append(UI.renderTodoList(todoList, project, selected));
+        todoList.forEach(todo => addListener(todo));
       } else {
-        const todoListBody = document.getElementById(`${projects[i]}-body`);
+        const todoListBody = document.getElementById(`${project}-body`);
 
         for (const todo of todoList) {
           const todoLine = document.getElementById(todo.id);
           if (!todoLine) {
             todoListBody.append(UI.renderTodo(todo));
+            addListener(todo);
           } else if (todo.status) {
             todoLine.setAttribute('class', 'text-danger cross-text');
           } else {
@@ -49,40 +65,21 @@ const Controller = (() => {
         }
       }
     }
-
     UI.updateForm(projects);
-  };
-
-  const addEventListener = () => {
-    for (const todo of todoLists) {
-      const todoStatus = document.getElementById(`${todo.id}-status`);
-      todoStatus.addEventListener('change', () => {
-        Data.updateTodo(todoLists, todo.id);
-        updateApp();
-      });
-
-      const todoDelete = document.getElementById(`${todo.id}-delete`);
-      todoDelete.addEventListener('click', () => {
-        Data.deleteTodo(todoLists, todo.id);
-        updateApp();
-      });
-    }
   };
 
   const runApp = () => {
     const todo = UI.getTodo();
-    if (todo) Data.addTodo(todoLists, todo);
+    if (todo) Data.addTodo(todo);
 
     todoLists = Data.getTodo();
     projects = Data.getProjects();
 
     updateApp();
-    addEventListener();
   };
 
   const init = () => {
     updateApp();
-    addEventListener();
 
     const addButton = document.getElementById('add-list-button');
     addButton.addEventListener('click', runApp);

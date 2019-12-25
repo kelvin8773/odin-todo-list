@@ -155,7 +155,7 @@ const UI = (() => {
         project: inputProject,
       };
     }
-    return {};
+    return false;
   };
 
   const updateForm = (projects) => {

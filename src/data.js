@@ -17,14 +17,9 @@ const Data = (() => {
     };
   };
 
-  const addTodo = (todoLists = data, todo) => {
-    todoLists.push(todoList(
-      todo.title,
-      todo.description,
-      todo.dueDate,
-      todo.priority,
-      todo.project,
-    ));
+  const addTodo = (todoLists, todo) => {
+    const t = todoList(todo.title, todo.description, todo.dueDate, todo.priority, todo.project);
+    todoLists.push(t);
     updateStorage(storageId, todoLists);
   };
 
@@ -83,8 +78,6 @@ const Data = (() => {
       } else {
         updateStorage(storageId, data);
       }
-    } else {
-      console.log('This Browser Not Support Local Storage!');
     }
 
     return data;

@@ -55,11 +55,22 @@ const UI = (() => {
     }
     todoLine.append(listStatus);
 
-    const listDelete = document.createElement('td');
+    const listUpdate = document.createElement('td');
+    const listEdit = document.createElement('span');
+    listEdit.setAttribute('id', `${todo.id}-edit`);
+    listEdit.setAttribute('class', 'todo-update');
+    listEdit.setAttribute('data-toggle', 'modal');
+    listEdit.setAttribute('data-target', '#todoModal');
+    listEdit.innerHTML = '<i class="far fa-edit fa-lg mr-2"></i>';
+    listUpdate.append(listEdit);
+
+    const listDelete = document.createElement('span');
     listDelete.setAttribute('id', `${todo.id}-delete`);
-    listDelete.setAttribute('class', 'text-secondary delete-todo');
-    listDelete.innerHTML = '<i class="fas fa-trash-alt fa-lg ml-3"></i>';
-    todoLine.append(listDelete);
+    listDelete.setAttribute('class', 'todo-update');
+    listDelete.innerHTML = '<i class="fas fa-trash-alt fa-lg "></i>';
+    listUpdate.append(listDelete);
+
+    todoLine.append(listUpdate);
 
     return todoLine;
   };
@@ -87,7 +98,7 @@ const UI = (() => {
             <th scope="col">DueDate</th>
             <th scope="col">Priority</th>
             <th scope="col">Status</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Update</th>
           </tr>
         </thead>`);
 
@@ -103,6 +114,19 @@ const UI = (() => {
 
     return todoListTab;
   };
+
+  const renderTodoModal = (todo) => {
+    const todoEditTitle = document.getElementById('todoEditTitle');
+    todoEditTitle.value = todo.title;
+    const todoEditDes = document.getElementById('todoEditDes');
+    todoEditDes.value = todo.description;
+    const todoEditDueDate = document.getElementById('todoEditDueDate');
+    todoEditDueDate.value = lightFormat(new Date(todo.dueDate), 'yyyy-MM-dd');
+    const todoEditPriority = document.getElementById('todoEditPriority');
+    todoEditPriority.value = todo.priority;
+    const todoEditProject = document.getElementById('todoEditProject');
+    todoEditProject.value = todo.project;
+  }
 
   const renderProject = (project, selected) => {
     const projectTab = document.createElement('a');
@@ -176,6 +200,7 @@ const UI = (() => {
   return {
     renderTodo,
     renderTodoList,
+    renderTodoModal,
     renderProject,
     updateForm,
     getTodo,

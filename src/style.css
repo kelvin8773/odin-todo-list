@@ -20,7 +20,11 @@ h6,
   font-size: 30px;
 }
 
-.delete-todo :hover {
+.todo-update {
+  color: lightgrey;
+}
+
+.todo-update :hover {
   color: red;
   cursor: pointer;
 }

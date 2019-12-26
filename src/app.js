@@ -22,12 +22,19 @@ const Controller = (() => {
         updateApp();
       });
 
+      const todoEdit = document.getElementById(`${todo.id}-edit`);
+      todoEdit.addEventListener('click', () => {
+        UI.renderTodoModal(todo);
+      });
+
       const todoDelete = document.getElementById(`${todo.id}-delete`);
       todoDelete.addEventListener('click', () => {
         Data.deleteTodo(todo.id);
         updateApp();
       });
     };
+
+    console.log('update');
 
     for (const project of projects) {
       const projectTab = document.getElementById(`${project}-tab`);
@@ -64,7 +71,8 @@ const Controller = (() => {
           }
         }
       }
-    }
+    };
+
     UI.updateForm(projects);
   };
 
@@ -80,8 +88,9 @@ const Controller = (() => {
 
   const init = () => {
     updateApp();
-
-    const addButton = document.getElementById('add-list-button');
+    const todoSaveButton = document.getElementById('todoSaveButton');
+    todoSaveButton.addEventListener('click', updateApp);
+    const addButton = document.getElementById('addButton');
     addButton.addEventListener('click', runApp);
   };
 

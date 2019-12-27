@@ -42,12 +42,18 @@ const Data = (() => {
     return data;
   };
 
-  const updateTodo = (todoId) => {
+  const updateTodo = (todo) => {
     for (let i = 0; i < data.length; i += 1) {
-      if (data[i].id === todoId) {
-        data[i].status = !data[i].status;
+      if (data[i].id === todo.id) {
+        data[i].title = todo.title;
+        data[i].description = todo.description;
+        data[i].dueDate = todo.dueDate;
+        data[i].priority = todo.priority;
+        data[i].project = todo.project;
+        data[i].status = todo.status;
       }
     }
+
     updateStorage(storageId, data);
     return data;
   };

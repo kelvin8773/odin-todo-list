@@ -116,17 +116,14 @@ const UI = (() => {
   };
 
   const renderTodoModal = (todo) => {
-    const todoEditTitle = document.getElementById('todoEditTitle');
-    todoEditTitle.value = todo.title;
-    const todoEditDes = document.getElementById('todoEditDes');
-    todoEditDes.value = todo.description;
-    const todoEditDueDate = document.getElementById('todoEditDueDate');
-    todoEditDueDate.value = lightFormat(new Date(todo.dueDate), 'yyyy-MM-dd');
-    const todoEditPriority = document.getElementById('todoEditPriority');
-    todoEditPriority.value = todo.priority;
-    const todoEditProject = document.getElementById('todoEditProject');
-    todoEditProject.value = todo.project;
-  }
+    document.getElementById('todoEditId').value = todo.id;
+    document.getElementById('todoEditTitle').value = todo.title;
+    document.getElementById('todoEditDes').value = todo.description;
+    document.getElementById('todoEditDueDate').value = lightFormat(new Date(todo.dueDate), 'yyyy-MM-dd');
+    document.getElementById('todoEditPriority').value = todo.priority;
+    document.getElementById('todoEditProject').value = todo.project;
+    document.getElementById('todoEditStatus').checked = todo.status;
+  };
 
   const renderProject = (project, selected) => {
     const projectTab = document.createElement('a');
@@ -182,6 +179,26 @@ const UI = (() => {
     return false;
   };
 
+  const getTodoUpdate = () => {
+    const todoEditId = document.getElementById('todoEditId').value;
+    const todoEditTitle = document.getElementById('todoEditTitle').value;
+    const todoEditDescription = document.getElementById('todoEditDes').value;
+    const todoEditDueDate = document.getElementById('todoEditDueDate').value;
+    const todoEditPriority = document.getElementById('todoEditPriority').value;
+    const todoEditProject = document.getElementById('todoEditProject').value;
+    const todoEditStatus = document.getElementById('todoEditStatus').checked;
+
+    return {
+      id: todoEditId,
+      title: todoEditTitle,
+      description: todoEditDescription,
+      dueDate: todoEditDueDate,
+      priority: todoEditPriority,
+      project: todoEditProject,
+      status: todoEditStatus,
+    };
+  };
+
   const updateForm = (projects) => {
     const addListForm = document.getElementById('add-list-form');
     const projectDatalist = document.getElementById('project-Lists');
@@ -204,6 +221,7 @@ const UI = (() => {
     renderProject,
     updateForm,
     getTodo,
+    getTodoUpdate,
   };
 })();
 

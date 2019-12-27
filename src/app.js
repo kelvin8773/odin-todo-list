@@ -18,7 +18,8 @@ const Controller = (() => {
     const addListener = (todo) => {
       const todoStatus = document.getElementById(`${todo.id}-status`);
       todoStatus.addEventListener('change', () => {
-        Data.updateTodo(todo.id);
+        todo.status = !todo.status;
+        Data.updateTodo(todo);
         updateApp();
       });
 
@@ -33,8 +34,6 @@ const Controller = (() => {
         updateApp();
       });
     };
-
-    console.log('update');
 
     for (const project of projects) {
       const projectTab = document.getElementById(`${project}-tab`);
@@ -71,7 +70,7 @@ const Controller = (() => {
           }
         }
       }
-    };
+    }
 
     UI.updateForm(projects);
   };
@@ -89,7 +88,12 @@ const Controller = (() => {
   const init = () => {
     updateApp();
     const todoSaveButton = document.getElementById('todoSaveButton');
-    todoSaveButton.addEventListener('click', updateApp);
+    todoSaveButton.addEventListener('click', () => {
+      const todo = UI.getTodoUpdate();
+      Data.updateTodo(todo);
+      location.reload();
+    });
+
     const addButton = document.getElementById('addButton');
     addButton.addEventListener('click', runApp);
   };

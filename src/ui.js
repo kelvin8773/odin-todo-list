@@ -10,7 +10,7 @@ const UI = (() => {
       todoLine.setAttribute('class', 'text-danger cross-text');
     } else {
       todoLine.setAttribute('class', '');
-    };
+    }
 
     const listID = document.createElement('th');
     listID.scope = 'row';
@@ -220,7 +220,9 @@ const UI = (() => {
     const todoStatus = document.getElementById(`${todoId}-status`);
 
     if (todoTitle.innerText !== todo.title) todoTitle.innerText = todo.title;
-    if (todoDescription.innerText !== todo.description) todoDescription.innerText = todo.description;
+    if (todoDescription.innerText !== todo.description) {
+      todoDescription.innerText = todo.description;
+    }
     if (todoDueDate.innerText !== todo.dueDate) {
       todoDueDate.innerText = todo.dueDate;
       const dueDate = new Date(todo.dueDate);
@@ -230,10 +232,9 @@ const UI = (() => {
       } else {
         todoDueDateDisplay.innerText = `${daysDiff} pass`;
       }
-    };
+    }
     if (todoPriority.innerText !== todo.priority) todoPriority.innerText = todo.priority;
     if (todoStatus.checked !== todo.status) todoTitle.checked = todo.status;
-
   };
 
   const updateForm = (projects) => {

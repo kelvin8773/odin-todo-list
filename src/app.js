@@ -70,7 +70,6 @@ const Controller = (() => {
             document.getElementById(node.id).remove();
           }
         }
-
       }
     }
 

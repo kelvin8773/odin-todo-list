@@ -54,13 +54,14 @@ const Controller = (() => {
 
         for (const todo of todoList) {
           const todoLine = document.getElementById(todo.id);
+
           if (!todoLine) {
             todoListBody.append(UI.renderTodo(todo));
             addListener(todo);
-          } else if (todo.status) {
-            todoLine.setAttribute('class', 'text-danger cross-text');
           } else {
-            todoLine.setAttribute('class', '');
+            UI.updateTodo(todo);
+            const statusClass = todo.status ? 'text-danger cross-text' : '';
+            todoLine.setAttribute('class', statusClass);
           }
         }
 
@@ -69,6 +70,7 @@ const Controller = (() => {
             document.getElementById(node.id).remove();
           }
         }
+
       }
     }
 
@@ -91,7 +93,8 @@ const Controller = (() => {
     todoSaveButton.addEventListener('click', () => {
       const todo = UI.getTodoUpdate();
       Data.updateTodo(todo);
-      location.reload();
+      projects = Data.getProjects();
+      updateApp();
     });
 
     const addButton = document.getElementById('addButton');

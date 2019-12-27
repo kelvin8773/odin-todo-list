@@ -8,7 +8,9 @@ const UI = (() => {
     todoLine.setAttribute('id', todo.id);
     if (todo.status) {
       todoLine.setAttribute('class', 'text-danger cross-text');
-    }
+    } else {
+      todoLine.setAttribute('class', '');
+    };
 
     const listID = document.createElement('th');
     listID.scope = 'row';
@@ -16,25 +18,34 @@ const UI = (() => {
     todoLine.append(listID);
 
     const listTitle = document.createElement('td');
+    listTitle.setAttribute('id', `${todo.id}-title`);
     listTitle.innerText = todo.title;
     todoLine.append(listTitle);
 
     const listDescription = document.createElement('td');
-
+    listDescription.setAttribute('id', `${todo.id}-description`);
     listDescription.innerText = todo.description;
     todoLine.append(listDescription);
 
+    const dueDateHidden = document.createElement('td');
+    dueDateHidden.setAttribute('id', `${todo.id}-dueDate`);
+    dueDateHidden.setAttribute('hidden', true);
+    dueDateHidden.innerText = todo.dueDate;
+    todoLine.append(dueDateHidden);
+
     const listDueDate = document.createElement('td');
+    listDueDate.setAttribute('id', `${todo.id}-dueDateDisplay`);
     const dueDate = new Date(todo.dueDate);
     const daysDiff = formatDistanceToNow(dueDate);
     if (isAfter(dueDate, new Date())) {
-      listDueDate.innerText = `${daysDiff} to go`;
+      listDueDate.innerText = `${daysDiff} left`;
     } else {
-      listDueDate.innerText = `${daysDiff} pass due`;
+      listDueDate.innerText = `${daysDiff} pass`;
     }
     todoLine.append(listDueDate);
 
     const listPriority = document.createElement('td');
+    listPriority.setAttribute('id', `${todo.id}-priority`);
     listPriority.innerText = todo.priority;
     todoLine.append(listPriority);
 
@@ -185,7 +196,7 @@ const UI = (() => {
     const todoEditDescription = document.getElementById('todoEditDes').value;
     const todoEditDueDate = document.getElementById('todoEditDueDate').value;
     const todoEditPriority = document.getElementById('todoEditPriority').value;
-    const todoEditProject = document.getElementById('todoEditProject').value;
+    const todoEditProject = document.getElementById('todoEditProject').value.split(' ').join('_');
     const todoEditStatus = document.getElementById('todoEditStatus').checked;
 
     return {
@@ -197,6 +208,32 @@ const UI = (() => {
       project: todoEditProject,
       status: todoEditStatus,
     };
+  };
+
+  const updateTodo = (todo) => {
+    const todoId = todo.id;
+    const todoTitle = document.getElementById(`${todoId}-title`);
+    const todoDescription = document.getElementById(`${todoId}-description`);
+    const todoDueDate = document.getElementById(`${todoId}-dueDate`);
+    const todoDueDateDisplay = document.getElementById(`${todoId}-dueDateDisplay`);
+    const todoPriority = document.getElementById(`${todoId}-priority`);
+    const todoStatus = document.getElementById(`${todoId}-status`);
+
+    if (todoTitle.innerText !== todo.title) todoTitle.innerText = todo.title;
+    if (todoDescription.innerText !== todo.description) todoDescription.innerText = todo.description;
+    if (todoDueDate.innerText !== todo.dueDate) {
+      todoDueDate.innerText = todo.dueDate;
+      const dueDate = new Date(todo.dueDate);
+      const daysDiff = formatDistanceToNow(dueDate);
+      if (isAfter(dueDate, new Date())) {
+        todoDueDateDisplay.innerText = `${daysDiff} left`;
+      } else {
+        todoDueDateDisplay.innerText = `${daysDiff} pass`;
+      }
+    };
+    if (todoPriority.innerText !== todo.priority) todoPriority.innerText = todo.priority;
+    if (todoStatus.checked !== todo.status) todoTitle.checked = todo.status;
+
   };
 
   const updateForm = (projects) => {
@@ -222,6 +259,7 @@ const UI = (() => {
     updateForm,
     getTodo,
     getTodoUpdate,
+    updateTodo,
   };
 })();
 

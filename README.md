@@ -1,7 +1,10 @@
-# Odin Todo List App
+<h1 align="center"> <span>☕️</span>  Odin Todo App Project </h1>
 
 > An Odin Project to learn JavaScript key concepts by utilizing only plain JavaScript (without any JS framework).
 
+![project Image](./todoList.png)
+
+## Introduction
 In this todo app, we tried to demonstrate some advance programming concepts, such as:
 
 * OOP Principles (Object Oriented Programming).
@@ -15,9 +18,6 @@ In this todo app, we tried to demonstrate some advance programming concepts, suc
 
 We also tried to utilize various modern technologies to help imitating real world development experiences from this project, you are welcome to replicate, distribute and re-generate our project for your personal learning purpose.
 
-
-![project Image](./todoList.png)
-
 ## Built With
 
 * JavaScript (ES6)
@@ -27,10 +27,10 @@ We also tried to utilize various modern technologies to help imitating real worl
 * Bootstrap/Fontawesome
 
 
-## ✨ Live Demo
+## ✨ Live Demo ✨
 [Project Online Demo](https://kelvin8773.github.io/odin-todo-list/).
 
-## How to Run Locally
+## How to Run Locally ☀️
 
 Clone the project to your local machine and following following steps.
 
@@ -53,7 +53,7 @@ npm start
 ```
 > Open http://127.0.0.1:8080 using your favourite broswer, if it doesn't open automatically.
 
-## How to get into Development mode
+## How to get into Development mode 👻
 
 Once you can run the project locally, you can choose either **build once** or **continue build** to reflect changes from development.
 
@@ -68,6 +68,16 @@ npm run watch
 
 > Once you are ready to deploy the project into production environment, you can run `npm build` to produce the production ready files (under `./dist` folder).
 
+## Project Reference 🎏
+* [Odin-JavaScript: Todo List Project](https://www.theodinproject.com/courses/javascript/lessons/todo-list)
+
+* [JavaScript Syntax & Usage](https://javascript.info/).
+
+* [Webpack introduction & Usage](https://www.theodinproject.com/courses/javascript/lessons/webpack-2).
+
+* [ES6 Introduction](https://www.theodinproject.com/courses/javascript/lessons/es).
+
+* [npm package: 'date-fns'](https://github.com/date-fns/date-fns)
 
 ## Authors
 

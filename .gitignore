@@ -108,3 +108,4 @@ typings/
 .eslintrc.js
 .eslintignore
 
+.vscode/

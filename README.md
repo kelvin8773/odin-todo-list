@@ -1,5 +1,19 @@
 <h1 align="center"> <span>☕️</span>  Odin Todo App Project </h1>
 
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://github.com/kelvin8773/odin-todo-list#readme" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+  <a href="https://github.com/kelvin8773/odin-todo-list/graphs/commit-activity" target="_blank">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
+  </a>
+  <a href="https://github.com/kelvin8773/odin-todo-list/blob/master/LICENSE" target="_blank">
+      <img alt="GitHub" src="https://img.shields.io/github/license/kelvin8773/odin-todo-list">
+  </a>
+</p>
+
+
 > An Odin Project to learn JavaScript key concepts by utilizing only plain JavaScript (without any JS framework).
 
 ![project Image](./todoList.png)
